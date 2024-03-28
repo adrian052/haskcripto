@@ -1,5 +1,6 @@
 module Substitution.RailFence (
     encryptRailFence,
+    decryptRailFence
 ) where
 
 import Data.List (sortBy)
