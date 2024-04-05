@@ -3,13 +3,20 @@ module Substitution.Caesar (
     decryptCaesar
 ) where
 
-import Data.Char
+import Data.Char ( ord, chr, isAsciiLower, isAsciiUpper )
 
-encryptCaesar :: String -> String
-encryptCaesar = map $ shift 3
+data CaesarError = NonAlphabeticChar | InvalidShift deriving (Show)
 
-decryptCaesar :: String -> String
-decryptCaesar = map $ shift (-3)
+type CaesarResult = Either CaesarError Char
 
-shift :: Int -> Char -> Char
-shift shift char = chr $ (ord char + (shift)) `mod` 128
+shift :: Int -> Char -> CaesarResult
+shift shift char
+    | isAsciiUpper char = Right $ chr (ord 'A' + (ord char - ord 'A' + shift) `mod` 26)
+    | isAsciiLower char = Right $ chr (ord 'a' + (ord char - ord 'a' + shift) `mod` 26)
+    | otherwise = Left NonAlphabeticChar
+
+encryptCaesar :: String -> Either CaesarError String
+encryptCaesar = mapM (shift 3)
+
+decryptCaesar :: String -> Either CaesarError String
+decryptCaesar = mapM (shift (-3))
