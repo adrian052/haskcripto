@@ -4,13 +4,13 @@ module Substitution.Atbash (
 
 import Data.Char
 
-encryptAtbash :: String -> String
-encryptAtbash = map substitute
+encryptAtbash :: String -> Either String String
+encryptAtbash = mapM substitute
     where
-        substitute :: Char -> Char
+        substitute :: Char -> Either String Char
         substitute char
-            | isLower char = substituteChar 'a' 'z' char
-            | isUpper char = substituteChar 'A' 'Z' char
-            | otherwise = char
+            | isLower char = Right $ substituteChar 'a' 'z' char
+            | isUpper char = Right $ substituteChar 'A' 'Z' char
+            | otherwise = Left "Please insert alphabet keys"
         substituteChar :: Char -> Char -> Char -> Char
-        substituteChar a z char = chr $ (ord z) - (ord char - ord a)
+        substituteChar a z char = chr $ ord z - (ord char - ord a)
