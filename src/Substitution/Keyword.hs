@@ -5,8 +5,7 @@ module Substitution.Keyword (
 
 import Data.Maybe(fromJust)
 import Data.List (elemIndex)
-
-import Data.Char
+import Data.Char ( isLetter, ord, toUpper )
 
 prepareKeyword :: String -> String
 prepareKeyword keyword = removeDuplicates (map toUpper keyword)

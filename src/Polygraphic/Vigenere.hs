@@ -1,5 +1,5 @@
 module Substitution.RailFence (
-    encryptVigenere
+    encryptVigenere,
     decryptVigenere
 ) where
 
