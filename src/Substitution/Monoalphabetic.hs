@@ -1,29 +1,26 @@
-module Substitution.RailFence (
-    encryptMonoalphabetic,
-    decryptMonoalphabetic
-) where
+module Substitution.RailFence
+  ( encryptMonoalphabetic,
+    decryptMonoalphabetic,
+  )
+where
 
+import Data.Char (isAlpha, toUpper)
 import qualified Data.Map as Map
-import Data.Char
 
 englishAlphabetPermutation :: [Char]
 englishAlphabetPermutation = "ZYXWVUTSRQPONMLKJIHGFEDCBA"
 
 mapEncrypt :: Map.Map Char Char
-mapEncrypt = Map.fromList $ zip ['A'..'Z'] englishAlphabetPermutation
+mapEncrypt = Map.fromList $ zip ['A' .. 'Z'] englishAlphabetPermutation
 
 mapDecrypt :: Map.Map Char Char
-mapDecrypt = Map.fromList $ zip englishAlphabetPermutation ['A'..'Z']
+mapDecrypt = Map.fromList $ zip englishAlphabetPermutation ['A' .. 'Z']
 
-encryptMonoalphabetic :: String -> String
-encryptMonoalphabetic message = map (\c -> Map.findWithDefault c c mapEncrypt) (formatText message)
+encryptMonoalphabetic :: String -> Maybe String
+encryptMonoalphabetic message = mapM (`Map.lookup` mapEncrypt) (toUpperWord message)
 
-decryptMonoalphabetic :: String -> String
-decryptMonoalphabetic message = map (\c -> Map.findWithDefault c c mapDecrypt) (formatText message)
+decryptMonoalphabetic :: String -> Maybe String
+decryptMonoalphabetic message = mapM (`Map.lookup` mapDecrypt) (toUpperWord message)
 
-
-formatText :: String -> String
-formatText str = if all isAlpha str && all isAlpha str
-                    then toUpperWord str
-                    else error "Please insert alpha keyword"
-                    where toUpperWord str = map toUpper str
+toUpperWord :: String -> String
+toUpperWord = map toUpper
