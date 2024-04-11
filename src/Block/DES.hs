@@ -2,6 +2,7 @@ import Data.Bits
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BSC
+import Data.List
 import Data.Word
 
 type BitMatrix = [[Bool]]
@@ -34,7 +35,7 @@ blockMatrix bytes
 
 --Initial permutation
 initialPermutation :: BitMatrix -> BitMatrix
-initialPermutation bitmatrix = permuteColumns bitmatrix permutation
+initialPermutation bitmatrix = rotateMatrix $ permuteColumns bitmatrix permutation
 
 permutation :: [Int]
 permutation = [1, 3, 5, 7, 0, 2, 4, 6]
@@ -42,4 +43,5 @@ permutation = [1, 3, 5, 7, 0, 2, 4, 6]
 permuteColumns :: BitMatrix -> [Int] -> BitMatrix
 permuteColumns matrix indices = map (\row -> map (row !!) indices) matrix
 
--- TODO: rotate bitmatrix
+rotateMatrix :: [[a]] -> [[a]]
+rotateMatrix = transpose . reverse
