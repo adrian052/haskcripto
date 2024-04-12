@@ -33,15 +33,24 @@ blockMatrix bytes
     word8ToBitsList :: Word8 -> [Bool]
     word8ToBitsList = word8ToBits
 
---Initial permutation
+--Initial permutation and inverse initial permutation
 initialPermutation :: BitMatrix -> BitMatrix
-initialPermutation bitmatrix = rotateMatrix $ permuteColumns bitmatrix permutation
+initialPermutation bitmatrix = rotateMatrixRight $ permuteColumns bitmatrix permutation
+
+inversePermutation :: BitMatrix -> BitMatrix
+inversePermutation bitmatrix = permuteColumns (rotateMatrixLeft bitmatrix) permutation2
 
 permutation :: [Int]
 permutation = [1, 3, 5, 7, 0, 2, 4, 6]
 
+permutation2 :: [Int]
+permutation2 = [4, 0, 5, 1, 6, 2, 7, 3]
+
 permuteColumns :: BitMatrix -> [Int] -> BitMatrix
 permuteColumns matrix indices = map (\row -> map (row !!) indices) matrix
 
-rotateMatrix :: [[a]] -> [[a]]
-rotateMatrix = transpose . reverse
+rotateMatrixRight :: [[a]] -> [[a]]
+rotateMatrixRight = transpose . reverse
+
+rotateMatrixLeft :: [[a]] -> [[a]]
+rotateMatrixLeft = reverse . transpose
