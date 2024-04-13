@@ -20,6 +20,9 @@ library
                       , Substitution.RailFence
                       , Substitution.Keyword
                       , Substitution.Atbash
+                      , Block.Matrix
+                      , Block.DES.DES
+                      , Block.DES.InitialPermutation
   build-depends:       base >= 4.8 && < 5
                        , bytestring
                        , containers

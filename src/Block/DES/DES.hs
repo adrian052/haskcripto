@@ -1,3 +1,7 @@
+module Block.DES.DES where
+
+import Block.DES.InitialPermutation (initialPermutation)
+import Block.Matrix (Matrix)
 import Data.Bits
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
@@ -5,7 +9,7 @@ import qualified Data.ByteString.Char8 as BSC
 import Data.List
 import Data.Word
 
-type BitMatrix = [[Bool]]
+type BitMatrix = Matrix Bool
 
 --Tests
 
@@ -32,25 +36,3 @@ blockMatrix bytes
     word8ToBits w = reverse [testBit w i | i <- [0 .. 7]]
     word8ToBitsList :: Word8 -> [Bool]
     word8ToBitsList = word8ToBits
-
---Initial permutation and inverse initial permutation
-initialPermutation :: BitMatrix -> BitMatrix
-initialPermutation bitmatrix = rotateMatrixRight $ permuteColumns bitmatrix permutation
-
-inversePermutation :: BitMatrix -> BitMatrix
-inversePermutation bitmatrix = permuteColumns (rotateMatrixLeft bitmatrix) permutation2
-
-permutation :: [Int]
-permutation = [1, 3, 5, 7, 0, 2, 4, 6]
-
-permutation2 :: [Int]
-permutation2 = [4, 0, 5, 1, 6, 2, 7, 3]
-
-permuteColumns :: BitMatrix -> [Int] -> BitMatrix
-permuteColumns matrix indices = map (\row -> map (row !!) indices) matrix
-
-rotateMatrixRight :: [[a]] -> [[a]]
-rotateMatrixRight = transpose . reverse
-
-rotateMatrixLeft :: [[a]] -> [[a]]
-rotateMatrixLeft = reverse . transpose
