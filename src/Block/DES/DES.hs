@@ -1,15 +1,13 @@
 module Block.DES.DES where
 
 import Block.DES.InitialPermutation (initialPermutation)
-import Block.Matrix (Matrix)
+import Block.Matrix (BitMatrix, Matrix)
 import Data.Bits
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BSC
 import Data.List
 import Data.Word
-
-type BitMatrix = Matrix Bool
 
 --Tests
 
