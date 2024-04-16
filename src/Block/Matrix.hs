@@ -1,5 +1,6 @@
 module Block.Matrix where
 
+import Data.Bits (Bits (xor))
 import Data.List (transpose)
 
 type Matrix a = [[a]]
@@ -23,3 +24,6 @@ addLastColumn col matrix = zipWith (\row c -> row ++ [c]) matrix col
 
 getColumn :: Int -> Matrix a -> [a]
 getColumn colIndex = map (!! colIndex)
+
+xorBitMatrix :: BitMatrix -> BitMatrix -> BitMatrix
+xorBitMatrix = zipWith $ zipWith xor
