@@ -1,5 +1,6 @@
 module Block.Matrix where
 
+import Control.Monad
 import Data.Bits (Bits (xor))
 import Data.List (transpose)
 
@@ -27,3 +28,9 @@ getColumn colIndex = map (!! colIndex)
 
 xorBitMatrix :: BitMatrix -> BitMatrix -> BitMatrix
 xorBitMatrix = zipWith $ zipWith xor
+
+group :: Int -> [a] -> Matrix a
+group _ [] = []
+group n l
+  | n > 0 = (take n l) : (group n (drop n l))
+  | otherwise = error "Negative or zero n"
