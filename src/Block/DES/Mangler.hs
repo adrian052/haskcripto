@@ -3,9 +3,10 @@ module Block.DES.Mangler where
 import Block.DES.DES (bitMatrix)
 import Block.Matrix (BitMatrix, Matrix, addFirstColumn, addLastColumn, getColumn, group, xorBitMatrix)
 import Control.Monad (join)
-import Data.Bits (Bits (xor))
-import Data.List (unfoldr)
-import Data.Sequence (chunksOf)
+import Data.Bits (Bits (complement, shiftL, shiftR, xor, (.&.), (.|.)))
+import Data.List (elemIndex, sortOn, unfoldr)
+import Data.Maybe (fromJust)
+import Data.Sequence ()
 
 expansionPermutation :: BitMatrix -> BitMatrix
 expansionPermutation bitMatrix =
@@ -46,4 +47,12 @@ boxS1 =
     [0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8],
     [4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0],
     [15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13]
+  ]
+
+lastPermutationMatrix :: [[(Int, Int)]]
+lastPermutationMatrix =
+  [ [(1, 7), (0, 6), (2, 3), (2, 4), (3, 4), (1, 3), (3, 3), (2, 0)],
+    [(0, 0), (1, 6), (2, 6), (3, 1), (0, 4), (2, 1), (3, 6), (1, 1)],
+    [(0, 1), (0, 7), (2, 7), (1, 5), (3, 7), (3, 2), (0, 2), (1, 0)],
+    [(2, 2), (1, 4), (3, 5), (0, 5), (2, 5), (1, 2), (0, 3), (3, 0)]
   ]
