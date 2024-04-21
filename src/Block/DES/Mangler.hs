@@ -1,13 +1,23 @@
 module Block.DES.Mangler where
 
 import Block.DES.DES (bitMatrix)
-import Block.Matrix (BitMatrix, Matrix, addFirstColumn, addLastColumn, getColumn, group, xorBitMatrix)
+import Block.Matrix (BitMatrix, Matrix, addFirstColumn, addLastColumn, applyPermutation, getColumn, group, xorBitMatrix)
 import Control.Monad (join)
 import Data.Bits (Bits (complement, shiftL, shiftR, xor, (.&.), (.|.)))
 import Data.List (elemIndex, sortOn, unfoldr)
 import Data.Maybe (fromJust)
 import Data.Sequence ()
 
+mangler :: BitMatrix -> BitMatrix -> BitMatrix
+mangler bitMatrix key = finalMatrix
+  where
+    expandedMatrix = expansionPermutation bitMatrix
+    xorResult = xor48bits expandedMatrix key
+    sixByRowResult = sixByRow xorResult
+    s1Result = performBoxS1 sixByRowResult
+    finalMatrix = applyPermutation lastPermutationMatrix s1Result
+
+--Algorithm functions
 expansionPermutation :: BitMatrix -> BitMatrix
 expansionPermutation bitMatrix =
   if checkLenght bitMatrix
@@ -36,6 +46,9 @@ reduceBoxS1 bool = leftPad False 4 (intToBoolList (boxS1 !! row !! col))
     intToBoolList 0 = [False]
     intToBoolList n = reverse $ unfoldr (\x -> if x == 0 then Nothing else Just (odd x, div x 2)) n
     leftPad elemToAdd n list = replicate (n - length list) elemToAdd ++ list
+
+performBoxS1 :: BitMatrix -> BitMatrix
+performBoxS1 = map reduceBoxS1
 
 --Helper functions and ds
 checkLenght :: Foldable t => [t a] -> Bool
