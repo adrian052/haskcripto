@@ -9,3 +9,6 @@ permutedChoice1 bitmatrix =
     else error "Please insert a 8x8 bitmatrix"
   where
     checkLenght bits = length bits == 8 && length (head bits) == 8
+
+leftShift :: Int -> [a] -> [a]
+leftShift positions vector = drop positions vector ++ take positions vector
