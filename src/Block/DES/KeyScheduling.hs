@@ -3,16 +3,31 @@ module Block.DES.KeyScheduling where
 import Block.Matrix (BitMatrix)
 import qualified Data.Set as Set
 
-permutedChoice1 :: BitMatrix -> BitMatrix
-permutedChoice1 bitmatrix =
-  if checkLenght bitmatrix
-    then map init bitmatrix
-    else error "Please insert a 8x8 bitmatrix"
+getKeys :: [a] -> [[a]]
+getKeys list = performScheduling (permutatedChoice1 list) 1
+
+performScheduling :: [a] -> Int -> [[a]]
+performScheduling lastList round
+  | round == 17 = []
+  | otherwise = result : performScheduling ls (round + 1)
   where
-    checkLenght bits = length bits == 8 && length (head bits) == 8
+    ls = if round `elem` [1, 2, 9, 16] then leftShift 1 lastList else leftShift 2 lastList
+    result = permutatedChoice2 ls
+
+permutatedChoice1 :: [a] -> [a]
+permutatedChoice1 = dropByIndex (Set.fromList [8, 16, 24, 32, 40, 48, 56, 64]) 1
+
+permutatedChoice2 :: [a] -> [a]
+permutatedChoice2 = dropByIndex (Set.fromList [9, 18, 22, 25, 35, 38, 43, 54]) 1
 
 leftShift :: Int -> [a] -> [a]
-leftShift positions vector = drop positions vector ++ take positions vector
+leftShift positions vector =
+  let len = length vector
+      halfLen = len `div` 2
+      (firstHalf, secondHalf) = splitAt halfLen vector
+      shiftedFirstHalf = drop positions firstHalf ++ take positions firstHalf
+      shiftedSecondHalf = drop positions secondHalf ++ take positions secondHalf
+   in shiftedFirstHalf ++ shiftedSecondHalf
 
 dropByIndex :: Set.Set Int -> Int -> [a] -> [a]
 dropByIndex _ _ [] = []
