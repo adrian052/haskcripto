@@ -23,6 +23,8 @@ library
                       , Block.Matrix
                       , Block.DES.DES
                       , Block.DES.InitialPermutation
+                      , Block.DES.Mangler
+                      , Block.DES.Round
   build-depends:       base >= 4.8 && < 5
                        , bytestring
                        , containers

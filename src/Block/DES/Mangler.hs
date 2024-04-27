@@ -15,23 +15,21 @@ mangler bitMatrix key = finalMatrix
     xorResult = xor48bits expandedMatrix key
     sixByRowResult = sixByRow xorResult
     s1Result = performBoxS1 sixByRowResult
-    finalMatrix = applyPermutation lastPermutationMatrix s1Result
+    s1Result8Row = group 8 (concat s1Result)
+    finalMatrix = applyPermutation lastPermutationMatrix s1Result8Row
 
 --Algorithm functions
 expansionPermutation :: BitMatrix -> BitMatrix
 expansionPermutation bitMatrix =
   if checkLenght bitMatrix
     then addLastColumn lastColumn $ addFirstColumn firstColumn bitMatrix
-    else error "Please insert a matrix of 8x4"
+    else error "Please insert a matrix of 4x8"
   where
     firstColumn = bitMatrix !! 7 !! 3 : init (getColumn 3 bitMatrix)
     lastColumn = tail (getColumn 0 bitMatrix) ++ [head $ head bitMatrix]
 
 xor48bits :: BitMatrix -> BitMatrix -> BitMatrix
-xor48bits bitMatrix1 bitMatrix2 =
-  if checkLenght bitMatrix1 && checkLenght bitMatrix2
-    then xorBitMatrix bitMatrix1 bitMatrix2
-    else error "Pleas insert a matrix of 8x4"
+xor48bits = xorBitMatrix
 
 sixByRow :: BitMatrix -> BitMatrix
 sixByRow bitMatrix = group 6 (concat bitMatrix)

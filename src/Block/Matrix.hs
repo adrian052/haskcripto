@@ -29,7 +29,7 @@ getColumn colIndex = map (!! colIndex)
 group :: Int -> [a] -> Matrix a
 group _ [] = []
 group n l
-  | n > 0 = (take n l) : (group n (drop n l))
+  | n > 0 = take n l : group n (drop n l)
   | otherwise = error "Negative or zero n"
 
 applyPermutation :: [[(Int, Int)]] -> Matrix a -> Matrix a

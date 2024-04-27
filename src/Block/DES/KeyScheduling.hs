@@ -4,7 +4,10 @@ import Block.Matrix (BitMatrix)
 import qualified Data.Set as Set
 
 getKeys :: [a] -> [[a]]
-getKeys list = performScheduling (permutatedChoice1 list) 1
+getKeys list =
+  if length list == 64
+    then performScheduling (permutatedChoice1 list) 1
+    else error "Please insert a list of 64 elems"
 
 performScheduling :: [a] -> Int -> [[a]]
 performScheduling lastList round
