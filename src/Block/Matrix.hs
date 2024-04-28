@@ -43,3 +43,6 @@ applyPermutation permutationMatrix matrix =
 
 xorBitMatrix :: BitMatrix -> BitMatrix -> BitMatrix
 xorBitMatrix = zipWith $ zipWith xor
+
+flat :: Matrix a -> [a]
+flat = concat

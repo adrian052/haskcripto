@@ -13,3 +13,8 @@ roundDES input key = result
     mangleResult = mangler rightHalfMatrix keyMatrix
     leftHalfResult = xorBitMatrix leftHalfMatrix mangleResult
     result = rightHalf ++ concat leftHalfResult
+
+performRounds :: [Bool] -> [[Bool]] -> [Bool]
+performRounds input keys
+  | null keys = input
+  | otherwise = performRounds (roundDES input (head keys)) (tail keys)

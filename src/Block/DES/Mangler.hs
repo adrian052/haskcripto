@@ -1,6 +1,5 @@
 module Block.DES.Mangler where
 
-import Block.DES.DES (bitMatrix)
 import Block.Matrix (BitMatrix, Matrix, addFirstColumn, addLastColumn, applyPermutation, getColumn, group, xorBitMatrix)
 import Control.Monad (join)
 import Data.Bits (Bits (complement, shiftL, shiftR, xor, (.&.), (.|.)))
