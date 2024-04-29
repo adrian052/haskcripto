@@ -1,4 +1,4 @@
-module Substitution.RailFence
+module Substitution.Monoalphabetic
   ( encryptMonoalphabetic,
     decryptMonoalphabetic,
   )

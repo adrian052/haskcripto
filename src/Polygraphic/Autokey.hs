@@ -1,4 +1,4 @@
-module Substitution.RailFence (
+module Polygraphic.Autokey (
     encryptAutokey,
     decryptAutokey
 ) where

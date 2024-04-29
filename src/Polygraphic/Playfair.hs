@@ -1,4 +1,4 @@
-module Substitution.RailFence (
+module Polygraphic.Playfair (
     encryptPlayfair,
     decryptPlayfair
 ) where
@@ -11,24 +11,24 @@ import Data.Maybe
 
 --Exposed functions
 encryptPlayfair :: String -> String -> String
-encryptPlayfair text keyword = concatMap (\(c1,c2) -> [c1]++[c2]) (map (\x -> encryptDigram x indexes matrix) digrams)
+encryptPlayfair text keyword = concatMap ((\(c1,c2) -> c1 : [c2]) . (\x -> encryptDigram x indexes matrix)) digrams
                             where matrix = createMatrix keyword
                                   indexes = alphIndexes matrix
                                   digrams = getDigrams text
 
 decryptPlayfair :: String -> String -> String
-decryptPlayfair text keyword = concatMap (\(c1,c2) -> [c1]++[c2]) (map (\x -> decryptDigram x indexes matrix) digrams)
+decryptPlayfair text keyword = concatMap ((\(c1,c2) -> c1 : [c2]) . (\x -> decryptDigram x indexes matrix)) digrams
                             where matrix = createMatrix keyword
                                   indexes = alphIndexes matrix
                                   digrams = getDigrams text
 
 --Algorithm functions
 createList :: String -> String
-createList keyword = keyword ++ abcWithoutKeys (Set.fromList keyword) 
+createList keyword = keyword ++ abcWithoutKeys (Set.fromList keyword)
                             where
                             abcWithoutKeys keys = filter (\x -> x/='J' && Set.notMember x keys) ['A'..'Z']
 
-createMatrix :: String -> [String] 
+createMatrix :: String -> [String]
 createMatrix unformatedKey = toMatrix(createList $ formatKeyword unformatedKey)
                               where
                               chunk _ [] = []
@@ -37,7 +37,7 @@ createMatrix unformatedKey = toMatrix(createList $ formatKeyword unformatedKey)
 
 alphIndexes :: [String] -> M.Map Char (Int, Int)
 alphIndexes matrix = M.fromList $ map (\(row, col, char) -> (char, (row, col))) charCoords
-    where charCoords = filter (\(_, _, c) -> c /= ' ') $ indexMatrix $ map (\row -> filter (/= ' ') row) matrix
+    where charCoords = filter (\(_, _, c) -> c /= ' ') $ indexMatrix $ map (filter (/= ' ')) matrix
 
 
 getDigrams :: String -> [(Char,Char)]
@@ -46,7 +46,7 @@ getDigrams text = buildDigrams $ formatText text
 buildDigrams :: String -> [(Char,Char)]
 buildDigrams []        = []
 buildDigrams [x]       = [(x,'X')]
-buildDigrams (x:y:z)   
+buildDigrams (x:y:z)
                     | x == y    = [(x,'X')] ++ buildDigrams (y:z)
                     | otherwise = [(x,y)]  ++ buildDigrams z
 
@@ -57,7 +57,7 @@ encryptDigram (c1,c2) charIndex matrix
                     | col1 == col2      = (matrix!!(mod (row1+1) 5)!!(col1),matrix!!(mod (row2+1) 5)!!(col2))
                     | otherwise         = (matrix!!row1!!col2,matrix!!row2!!col1)
                     where (row1, col1) = fromMaybe ((-1),(-1)) (M.lookup c1 charIndex)
-                          (row2, col2) = fromMaybe ((-1),(-1)) (M.lookup c2 charIndex) 
+                          (row2, col2) = fromMaybe ((-1),(-1)) (M.lookup c2 charIndex)
 
 decryptDigram :: (Char, Char) -> M.Map Char (Int, Int) -> [String] -> (Char, Char)
 decryptDigram (c1, c2) charIndex matrix
@@ -85,7 +85,7 @@ formatKeyword str = if ((all isAlpha str) && (all isAlpha str))
                     where
                         removeDuplicated [] = []
                         removeDuplicated (x:xs) = x : removeDuplicated (filter (/= x) xs)
-                        
+
 formatText :: String -> String
 formatText str = if ((all isAlpha str) && (all isAlpha str))
                     then toUpperWord $ (convertJI str)
