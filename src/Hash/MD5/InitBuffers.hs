@@ -23,7 +23,7 @@ hexToBits 'C' = [True, True, False, False]
 hexToBits 'D' = [True, True, False, True]
 hexToBits 'E' = [True, True, True, False]
 hexToBits 'F' = [True, True, True, True]
-hexToBits _   = error "Caracter hexadecimal no válido"
+hexToBits _   = error "Caracter hexadecimal not valid"
 
 hexStringToBits :: String -> [Bool]
 hexStringToBits = concatMap hexToBits
