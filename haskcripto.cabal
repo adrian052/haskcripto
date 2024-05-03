@@ -25,6 +25,7 @@ library
                       , Block.DES.InitialPermutation
                       , Block.DES.Mangler
                       , Block.DES.Round
+                      , Utils
   build-depends:       base >= 4.8 && < 5
                        , bytestring
                        , containers

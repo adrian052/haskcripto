@@ -1,4 +1,4 @@
-module Block.Matrix where
+module Matrix where
 
 import Control.Monad
 import Data.Bits (Bits (xor))

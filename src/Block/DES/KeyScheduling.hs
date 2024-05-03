@@ -1,7 +1,7 @@
 module Block.DES.KeyScheduling where
 
-import Block.Matrix (BitMatrix)
 import qualified Data.Set as Set
+import Matrix (BitMatrix)
 
 getKeys :: [a] -> [[a]]
 getKeys list =

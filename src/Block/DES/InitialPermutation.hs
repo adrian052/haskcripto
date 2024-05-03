@@ -1,6 +1,6 @@
 module Block.DES.InitialPermutation (initialPermutation, inversePermutation) where
 
-import Block.Matrix
+import Matrix
   ( Matrix,
     permuteColumns,
     rotateMatrixLeft,

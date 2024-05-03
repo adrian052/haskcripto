@@ -1,7 +1,7 @@
 module Block.DES.Round where
 
 import Block.DES.Mangler (mangler)
-import Block.Matrix (group, xorBitMatrix)
+import Matrix (group, xorBitMatrix)
 
 roundDES :: [Bool] -> [Bool] -> [Bool]
 roundDES input key = result

@@ -3,15 +3,15 @@ module Block.DES.DES (encryptDESWord, decryptDESWord) where
 import Block.DES.InitialPermutation (initialPermutation, inversePermutation)
 import Block.DES.KeyScheduling (getKeys)
 import Block.DES.Round (performRounds)
-import Block.Matrix (BitMatrix, Matrix, group)
 import Control.Arrow (ArrowChoice (right))
 import Data.Bits
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BSC
+import Data.Char
 import Data.List
 import Data.Word
-import Data.Char
+import Matrix (BitMatrix, Matrix, group)
 
 --Tests
 
@@ -41,18 +41,18 @@ blockMatrix bytes
 
 padToMultipleOf8 :: BS.ByteString -> BS.ByteString
 padToMultipleOf8 bs =
-    let len = BS.length bs
-        paddingNeeded = if len `mod` 8 == 0 then 0 else 8 - (len `mod` 8)
-        padding = BS.replicate paddingNeeded 32
-    in bs `BS.append` padding
+  let len = BS.length bs
+      paddingNeeded = if len `mod` 8 == 0 then 0 else 8 - (len `mod` 8)
+      padding = BS.replicate paddingNeeded 32
+   in bs `BS.append` padding
 
 bitsToWord8 :: [Bool] -> Word8
 bitsToWord8 bools = foldl (\acc (i, b) -> if b then setBit acc i else clearBit acc i) 0 indexedBools
-    where indexedBools = zip [0..7] (reverse bools)
+  where
+    indexedBools = zip [0 .. 7] (reverse bools)
 
 word8ListToAsciiString :: [Word8] -> String
 word8ListToAsciiString = map (chr . fromIntegral)
-
 
 encryptBlockDES :: BitMatrix -> [Bool] -> BitMatrix
 encryptBlockDES block key = result
@@ -78,24 +78,24 @@ decryptBlockDES block key = result
     matrixPreInverse = Block.Matrix.group 8 swap32
     result = inversePermutation matrixPreInverse
 
---Functions to export 
+--Functions to export
 
 encryptDESWord :: BS.ByteString -> BS.ByteString -> String
-encryptDESWord word key 
-  | BS.length key == 8 = word8ListToAsciiString (map bitsToWord8 flatOneLevel) 
+encryptDESWord word key
+  | BS.length key == 8 = word8ListToAsciiString (map bitsToWord8 flatOneLevel)
   | otherwise = error "Please insert a 8 char key"
   where
-      flatOneLevel = concat encryptedBlocks
-      encryptedBlocks = map (`encryptBlockDES` keyBitList) blocks
-      blocks = map blockMatrix (blocksOf (padToMultipleOf8 word) 8)
-      keyBitList = concat (blockMatrix key)
+    flatOneLevel = concat encryptedBlocks
+    encryptedBlocks = map (`encryptBlockDES` keyBitList) blocks
+    blocks = map blockMatrix (blocksOf (padToMultipleOf8 word) 8)
+    keyBitList = concat (blockMatrix key)
 
 decryptDESWord :: BS.ByteString -> BS.ByteString -> String
-decryptDESWord word key 
-  | BS.length key == 8 = word8ListToAsciiString (map bitsToWord8 flatOneLevel) 
+decryptDESWord word key
+  | BS.length key == 8 = word8ListToAsciiString (map bitsToWord8 flatOneLevel)
   | otherwise = error "Please insert a 8 char key"
   where
-      flatOneLevel = concat encryptedBlocks
-      encryptedBlocks = map (`decryptBlockDES` keyBitList) blocks
-      blocks = map blockMatrix (blocksOf (padToMultipleOf8 word) 8)
-      keyBitList = concat (blockMatrix key)
+    flatOneLevel = concat encryptedBlocks
+    encryptedBlocks = map (`decryptBlockDES` keyBitList) blocks
+    blocks = map blockMatrix (blocksOf (padToMultipleOf8 word) 8)
+    keyBitList = concat (blockMatrix key)

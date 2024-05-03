@@ -1,5 +1,6 @@
 import Data.Bits
 import Data.List
+import Matrix
 
 paddingMD5 :: [Bool] -> [Bool]
 paddingMD5 input = paddedInput
@@ -11,3 +12,6 @@ paddingMD5 input = paddedInput
     paddedInput = input ++ padding ++ lengthToBits originalLength
     lengthToBits :: Int -> [Bool]
     lengthToBits len = reverse $ take 64 $ unfoldr (\x -> if x == 0 then Nothing else Just (testBit x 0, shiftR x 1)) len
+
+getBlocks :: [Bool] -> [[Bool]]
+getBlocks = group 512

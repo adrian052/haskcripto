@@ -1,11 +1,11 @@
 module Block.DES.Mangler where
 
-import Block.Matrix (BitMatrix, Matrix, addFirstColumn, addLastColumn, applyPermutation, getColumn, group, xorBitMatrix)
 import Control.Monad (join)
 import Data.Bits (Bits (complement, shiftL, shiftR, xor, (.&.), (.|.)))
 import Data.List (elemIndex, sortOn, unfoldr)
 import Data.Maybe (fromJust)
 import Data.Sequence ()
+import Matrix (BitMatrix, Matrix, addFirstColumn, addLastColumn, applyPermutation, getColumn, group, xorBitMatrix)
 
 mangler :: BitMatrix -> BitMatrix -> BitMatrix
 mangler bitMatrix key = finalMatrix
