@@ -14,4 +14,4 @@ paddingMD5 input = paddedInput
     lengthToBits len = reverse $ take 64 $ unfoldr (\x -> if x == 0 then Nothing else Just (testBit x 0, shiftR x 1)) len
 
 getBlocks :: [Bool] -> [[Bool]]
-getBlocks = group 512
+getBlocks arr = map (group 16) (group 512 arr)
