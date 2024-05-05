@@ -63,7 +63,7 @@ encryptBlockDES block key = result
     roundsResult = performRounds flatInitPermutation keys
     (left, right) = splitAt 32 roundsResult
     swap32 = right ++ left
-    matrixPreInverse = Block.Matrix.group 8 swap32
+    matrixPreInverse = Matrix.group 8 swap32
     result = inversePermutation matrixPreInverse
 
 decryptBlockDES :: BitMatrix -> [Bool] -> BitMatrix
@@ -75,7 +75,7 @@ decryptBlockDES block key = result
     roundsResult = performRounds flatInitPermutation keys
     (left, right) = splitAt 32 roundsResult
     swap32 = right ++ left
-    matrixPreInverse = Block.Matrix.group 8 swap32
+    matrixPreInverse = Matrix.group 8 swap32
     result = inversePermutation matrixPreInverse
 
 --Functions to export

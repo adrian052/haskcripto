@@ -20,12 +20,10 @@ library
                       , Substitution.RailFence
                       , Substitution.Keyword
                       , Substitution.Atbash
-                      , Block.Matrix
                       , Block.DES.DES
                       , Block.DES.InitialPermutation
                       , Block.DES.Mangler
                       , Block.DES.Round
-                      , Utils
                       , Matrix
   build-depends:       base >= 4.8 && < 5
                        , bytestring

@@ -1,4 +1,4 @@
-import Matrix (chunksOf)
+import Matrix (group)
 
 initializeBuffers :: [[Bool]]
 initializeBuffers = concatMap hexToBits32 initialValuesHex
@@ -29,4 +29,4 @@ hexStringToBits :: String -> [Bool]
 hexStringToBits = concatMap hexToBits
 
 hexToBits32 :: String -> [[Bool]]
-hexToBits32 hexString = chunksOf 4 $ hexStringToBits hexString
+hexToBits32 hexString = group 4 $ hexStringToBits hexString
