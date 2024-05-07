@@ -25,6 +25,10 @@ library
                       , Block.DES.Mangler
                       , Block.DES.Round
                       , Matrix
+                      , Hash.MD5.Functions
+                      , Hash.MD5.Padding
+                      , Hash.MD5.InitValues
+                      , Hash.MD5.MD5
   build-depends:       base >= 4.8 && < 5
                        , bytestring
                        , containers

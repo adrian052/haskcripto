@@ -1,3 +1,5 @@
+module Hash.MD5.InitValues where
+
 import Matrix (group)
 
 -- Initialize buffers

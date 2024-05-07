@@ -1,3 +1,5 @@
+module Hash.MD5.Padding where
+
 import Data.Bits
 import Data.List
 import Matrix

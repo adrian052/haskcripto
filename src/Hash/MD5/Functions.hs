@@ -1,3 +1,5 @@
+module Hash.MD5.Functions where
+
 import Data.Bits (Bits (xor))
 
 f :: [Bool] -> [Bool] -> [Bool] -> [Bool]
