@@ -6,6 +6,9 @@ import Hash.MD5.Functions (f)
 import Hash.MD5.InitValues (initializeBuffers, kConstants)
 import Hash.MD5.Padding (getBlocks, paddingMD5)
 
---From Strings to Bits
-stringToBits :: String -> [Bool]
-stringToBits = concatMap (\c -> reverse [testBit (ord c) i | i <- [0 .. 7]])
+--Get M from input
+m :: String -> [[Bool]]
+m str = getBlocks (stringToBits str)
+    where 
+    stringToBits :: String -> [Bool]
+    stringToBits = concatMap (\c -> reverse [testBit (ord c) i | i <- [0 .. 7]])
