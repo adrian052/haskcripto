@@ -30,6 +30,7 @@ library
                       , Hash.MD5.InitValues
                       , Hash.MD5.MD5
                       , Hash.MD5.Round
+                      , Hash.MD5.ProcessBlock
   build-depends:       base >= 4.8 && < 5
                        , bytestring
                        , containers

@@ -1,104 +1,55 @@
 module Hash.MD5.InitValues where
 
+import Data.Bits (Bits (testBit))
 import Matrix (group)
 
 -- Initialize buffers
 initializeBuffers :: [[Bool]]
-initializeBuffers = concatMap hexToBits32 initialValuesHex
+initializeBuffers = map (integerToBoolList) initialValuesHex
 
-initialValuesHex :: [String]
-initialValuesHex = ["67452301", "EFCDAB89", "98BADCFE", "10325476"]
-
-hexToBits :: Char -> [Bool]
-hexToBits '0' = replicate 4 False
-hexToBits '1' = [False, False, False, True]
-hexToBits '2' = [False, False, True, False]
-hexToBits '3' = [False, False, True, True]
-hexToBits '4' = [False, True, False, False]
-hexToBits '5' = [False, True, False, True]
-hexToBits '6' = [False, True, True, False]
-hexToBits '7' = [False, True, True, True]
-hexToBits '8' = [True, False, False, False]
-hexToBits '9' = [True, False, False, True]
-hexToBits 'A' = [True, False, True, False]
-hexToBits 'B' = [True, False, True, True]
-hexToBits 'C' = [True, True, False, False]
-hexToBits 'D' = [True, True, False, True]
-hexToBits 'E' = [True, True, True, False]
-hexToBits 'F' = [True, True, True, True]
-hexToBits _ = error "Caracter hexadecimal not valid"
-
-hexStringToBits :: String -> [Bool]
-hexStringToBits = concatMap hexToBits
-
-hexToBits32 :: String -> [[Bool]]
-hexToBits32 hexString = group 4 $ hexStringToBits hexString
+initialValuesHex :: [Integer]
+initialValuesHex = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476]
 
 --Initialize K
 kConstants :: [Integer]
-kConstants =
-  [ 0xd76aa478,
-    0xe8c7b756,
-    0x242070db,
-    0xc1bdceee,
-    0xf57c0faf,
-    0x4787c62a,
-    0xa8304613,
-    0xfd469501,
-    0x698098d8,
-    0x8b44f7af,
-    0xffff5bb1,
-    0x895cd7be,
-    0x6b901122,
-    0xfd987193,
-    0xa679438e,
-    0x49b40821,
-    0xf61e2562,
-    0xc040b340,
-    0x265e5a51,
-    0xe9b6c7aa,
-    0xd62f105d,
-    0x02441453,
-    0xd8a1e681,
-    0xe7d3fbc8,
-    0x21e1cde6,
-    0xc33707d6,
-    0xf4d50d87,
-    0x455a14ed,
-    0xa9e3e905,
-    0xfcefa3f8,
-    0x676f02d9,
-    0x8d2a4c8a,
-    0xfffa3942,
-    0x8771f681,
-    0x6d9d6122,
-    0xfde5380c,
-    0xa4beea44,
-    0x4bdecfa9,
-    0xf6bb4b60,
-    0xbebfbc70,
-    0x289b7ec6,
-    0xeaa127fa,
-    0xd4ef3085,
-    0x04881d05,
-    0xd9d4d039,
-    0xe6db99e5,
-    0x1fa27cf8,
-    0xc4ac5665,
-    0xf4292244,
-    0x432aff97,
-    0xab9423a7,
-    0xfc93a039,
-    0x655b59c3,
-    0x8f0ccc92,
-    0xffeff47d,
-    0x85845dd1,
-    0x6fa87e4f,
-    0xfe2ce6e0,
-    0xa3014314,
-    0x4e0811a1,
-    0xf7537e82,
-    0xbd3af235,
-    0x2ad7d2bb,
-    0xeb86d391
-  ]
+kConstants = [0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
+            0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
+            0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
+            0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
+            0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
+            0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
+            0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
+            0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
+            0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
+            0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
+            0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
+            0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
+            0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
+            0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
+            0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
+            0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391]
+
+kConst :: [[Bool]]
+kConst = map (integerToBoolList) kConstants
+
+integerToBoolList :: Integer -> [Bool]
+integerToBoolList n = map (testBit n) [31,30..0]
+
+
+kGrouped :: [[[Bool]]]
+kGrouped = group 16 (kConst) 
+
+k1 :: [[Bool]]
+k1 = kGrouped !! 0
+
+k2 :: [[Bool]]
+k2 = kGrouped !! 1
+
+k3 :: [[Bool]]
+k3 = kGrouped !! 2
+
+k4 :: [[Bool]]
+k4 = kGrouped !! 3
+
+
+--- Initialize shifts
